@@ -10,19 +10,21 @@ from random import randint
 from shutil import copyfile
 
 debug = False
-upload_history_file = "../input/land_grabbing.txt"
+upload_history_file = "../input/wanted_repost.txt"
+log_file = "../logs/wanted_repost.log"
 #upload_photo_url = 'http://4.bp.blogspot.com/-BLWWSEmKcoI/VTNOMewzPXI/AAAAAAAAB6I/P_YpCc4xjfk/s1600/LOKal%2BOne-Sheeter.jpg'
-#upload_photo_url = 'http://1.bp.blogspot.com/-j2cvkQVWFVM/VTkVR0gbxLI/AAAAAAAAB6w/ko4If9Gh4A8/s1600/Wanted%2BPoster-rev.jpg'
+upload_photo_url = 'http://1.bp.blogspot.com/-j2cvkQVWFVM/VTkVR0gbxLI/AAAAAAAAB6w/ko4If9Gh4A8/s1600/Wanted%2BPoster-rev.jpg'
 #upload_photo_url = 'http://3.bp.blogspot.com/-CggBxiyUp-Q/VULPkzfxeAI/AAAAAAAAB7c/t3KU5-DpEGw/s1600/Red%2BCarpet.png'
+#upload_photo_url = 'http://1.bp.blogspot.com/-Geytv-dcfDY/VULZOjMmF7I/AAAAAAAAB7s/YsPjauxqXz0/s1600/Labour%2BDay_pourakarmikas.jpg'
+#upload_photo_url = 'http://4.bp.blogspot.com/-7NRe8Hf7A6U/VUQ2RioSDzI/AAAAAAAAB8I/rSd8ciNo6EE/s1600/11125267_10153884723284832_6666883335278704733_o.jpg'
+
 #upload_photo_caption = "Bengaluru LOKal platform is ready. The carpet's rolled out. Are you ready to participate? If YES, let us know here: http://goo.gl/forms/Q4XwKbeyoA"
-upload_photo_url = 'http://1.bp.blogspot.com/-Geytv-dcfDY/VULZOjMmF7I/AAAAAAAAB7s/YsPjauxqXz0/s1600/Labour%2BDay_pourakarmikas.jpg'
-upload_photo_url = 'http://4.bp.blogspot.com/-7NRe8Hf7A6U/VUQ2RioSDzI/AAAAAAAAB8I/rSd8ciNo6EE/s1600/11125267_10153884723284832_6666883335278704733_o.jpg'
 
 
 upload_hash = {}
 def dump_file():
   timestamp = datetime.datetime.now().time().isoformat()
-  new_file = upload_history_file + "_" + timestamp
+  new_file = log_file + "_" + timestamp
   f = open(new_file, 'w')
   for k, v in upload_hash.iteritems():
     f.write(k + '\t' + v + '\n')
@@ -65,6 +67,11 @@ count = 0
 for page in pages:
   page_name = page['name']
   page_id = page['id']
+
+   # ignore pages that we don't want updated
+  if page_name == 'Bengaluru LOKal':
+    continue
+
   if page_id in upload_hash:
     continue
   page_access_token = page['access_token']
@@ -78,7 +85,7 @@ for page in pages:
     path_string = "%s/photos" % page_id
     page_graph = GraphAPI(page_access_token)
     image_url = upload_photo_url
-    upload_photo_caption = 'We request %s volunteers to join the protest march today, against land grabbing, supported by Loksatta Party Karnataka.' % (page_name)
+    upload_photo_caption = "We request %s volunteers who haven't done so already, to complete this questionnaire today. http://goo.gl/forms/Q4XwKbeyoA We'll be forming teams based on your interest areas." % (page_name)
     r = page_graph.post(path=path_string,caption=upload_photo_caption,source=urllib2.urlopen(image_url))
     photo_id = r['id'] 
     print 'Success: posted photo with id: ' + photo_id
