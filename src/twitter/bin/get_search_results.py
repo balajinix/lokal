@@ -15,6 +15,36 @@ from random import randint
 # make sure you run the script with debug set to True first
 debug = True
 
+categories = {
+              'pourakarmika' : 'pourakarmika',
+              'bwssb' : 'bwssb',
+              'sewage' : 'bwssb',
+              'garbage' : 'garbage',
+              'cleaning' : 'garbage',
+              'police' : 'police',
+              'CPBlr' : 'police',
+              'BlrCityPolice' : 'police',
+              'footpath' : 'footpath',
+              'tanker' : 'water',
+              'contractor' : 'bbmp',
+              'traffic' : 'traffic',
+              'hsr' : '174',
+              'bellandur' : '150',
+              'flood' : 'flood',
+              'lake' : 'lakes',
+              'dengue' : 'dengue'
+             }
+
+messages = {
+             'pourakarmika' : 'Loksatta supports better working conditions for Pourakarmikas.',
+             'flood' : 'Bengaluru needs a flood-resilience strategy proposed by Dr. @ashwinmahesh',
+             'footpath' : 'Loksatta demands usable footpaths on all roads. Prioritize Pedestrians!',
+             'lake' : 'Loksatta supports Lake rejuvenation to solve Bengaluru water crisis.',
+             'dengue' : 'Loksatta demands a Health Map to combat Dengue in Bengaluru.',
+             'water' : 'Loksatta demands tanker water tariff be same as pipe water tariff.',
+             'garbage' : 'Loksatta demands SWM and Segregation of waste by BBMP. Dumping Saaku!'
+           }
+
 # we need to have proper credentials
 consumer_key = ''
 consumer_secret = ''
@@ -68,38 +98,6 @@ try:
   f.close()
 except:
   print "File not found: %s" % (upload_history_file)
-
-#api = twitter.Api(consumer_key='xZLFaapSdzN0UMLxCjD5vvGSi', consumer_secret='KpI0gBP9A4bL7HNFtPNvJ2BXWRo0jdf3Jb6snE2YLdQNNZPnaC', access_token_key='3195551840-6XWzT7woxZ3pBmM3UlFhBzo2iN6ISkLh3mTvAtf', access_token_secret='V23vneZMzo4eY5W6rmgJtgWpF4FDbyLbRkD34InTFoio4')
-
-categories = {
-              'pourakarmika' : 'pourakarmika',
-              'bwssb' : 'bwssb',
-              'sewage' : 'bwssb',
-              'garbage' : 'garbage',
-              'cleaning' : 'garbage',
-              'police' : 'police',
-              'CPBlr' : 'police',
-              'BlrCityPolice' : 'police',
-              'footpath' : 'footpath',
-              'tanker' : 'water',
-              'contractor' : 'bbmp',
-              'traffic' : 'traffic',
-              'hsr' : '174',
-              'bellandur' : '150',
-              'flood' : 'flood',
-              'lake' : 'lakes',
-              'dengue' : 'dengue'
-             }
-
-messages = {
-             'pourakarmika' : 'Loksatta supports better working conditions for Pourakarmikas.',
-             'flood' : 'Bengaluru needs a flood-resilience strategy proposed by Dr. @ashwinmahesh',
-             'footpath' : 'Loksatta demands usable footpaths on all roads. Prioritize Pedestrians!',
-             'lake' : 'Loksatta supports Lake rejuvenation to solve Bengaluru water crisis.',
-             'dengue' : 'Loksatta demands a Health Map to combat Dengue in Bengaluru.',
-             'water' : 'Loksatta demands tanker water tariff be same as pipe water tariff.',
-             'garbage' : 'Loksatta demands SWM and Segregation of waste by BBMP. Dumping Saaku!'
-           }
    
 search = api.GetSearch(term='bbmpadmn', lang='en', result_type='recent', count=200, max_id='')
 append_url = " http://loksattakarnataka.org/BengaluruLokal/"
