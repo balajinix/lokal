@@ -9,6 +9,10 @@ import time
 from random import randint
 from shutil import copyfile
 
+##################################
+# this script is not working yet #
+##################################
+
 debug = True
 upload_history_file = "../output/bda_master_plan_meeting.txt"
 upload_link_url = 'https://www.facebook.com/BengaluruLOKal/posts/1583309238603369'
