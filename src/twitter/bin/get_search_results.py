@@ -13,13 +13,14 @@ import time
 from random import randint
 
 # make sure you run the script with debug set to True first
-debug = True
+debug = False
 
 categories = {
               'pourakarmika' : 'pourakarmika',
               'bwssb' : 'bwssb',
               'sewage' : 'bwssb',
               'garbage' : 'garbage',
+              'dumping' : 'garbage',
               'cleaning' : 'garbage',
               'police' : 'police',
               'CPBlr' : 'police',
@@ -30,14 +31,15 @@ categories = {
               'traffic' : 'traffic',
               'hsr' : '174',
               'bellandur' : '150',
-              'flood' : 'flood',
+              'flood' : 'drains',
+              'drain' : 'drains',
               'lake' : 'lakes',
               'dengue' : 'dengue'
              }
 
 messages = {
              'pourakarmika' : 'Loksatta supports better working conditions for Pourakarmikas.',
-             'flood' : 'Bengaluru needs a flood-resilience strategy proposed by Dr. @ashwinmahesh',
+             'drains' : 'Bengaluru needs a flood-resilience strategy proposed by Dr. @ashwinmahesh',
              'footpath' : 'Loksatta demands usable footpaths on all roads. Prioritize Pedestrians!',
              'lake' : 'Loksatta supports Lake rejuvenation to solve Bengaluru water crisis.',
              'dengue' : 'Loksatta demands a Health Map to combat Dengue in Bengaluru.',
@@ -79,6 +81,7 @@ def dump_file():
     f.write(k + '\t' + v + '\n')
   f.close()
   return new_file
+
 # load history file onto hash
 try:
   # we need to provide a file name to keep track of photo ids
@@ -108,7 +111,7 @@ for t in search:
 
   # for now, we'll not tweet to those already tweeted to
   if screen_name in upload_hash:
-    print "Already tweeted to", screen_name, " with message ", upload_hash[screen_name]
+    #print "Already tweeted to", screen_name, " with message ", upload_hash[screen_name]
     continue
 
   #Add the .encode to force encoding
@@ -121,6 +124,7 @@ for t in search:
       #tweet_category += v + '|'
       tweet_category = v
   if len(tweet_category) < 1:
+    #print "No tweet category for: ", tweet
     continue
 
   if tweet_category in messages:
@@ -131,25 +135,26 @@ for t in search:
     #if len(response) + len(append_handle) < 140:
     response += append_handle
     try:
-      if debug == False:
-        print "Tweet: ", screen_name, tweet
-        print "Category: ", tweet_category
-        print "Response: ", response, len(response)
-        #status = api.PostUpdate(response)
+      mention = "Tweet: @" + screen_name + " says: " + tweet
+      print mention
+      print "Category: ", tweet_category
+      print "Response: ", response, "\n"
+      if debug is False:
+        status = api.PostUpdate(response)
     except Exception, e:
-      response = base_response
+      short_response = base_response + append_handle
       try:
-        print "Retry Response: ", response, len(response)
-        #if debug == False:
-          #status = api.PostUpdate(response)
+        print "Retry Response: ", short_response, len(response), len(short_response), "\n"
+        if debug is False:
+          status = api.PostUpdate(short_response)
       except Exception, e:
-        "[Error] Could not tweet response %s" %(response)
-    if debug == False:
+        "[Error] Could not tweet response %s" %(short_response)
+    if debug is False:
       upload_hash[screen_name] = messages[tweet_category]
-    sleep_interval = randint(1,3)
-    time.sleep(sleep_interval)
+      sleep_interval = randint(5, 25)
+      time.sleep(sleep_interval)
 
-if debug == False:
+if debug is False:
   copyfile(upload_history_file, upload_history_file + ".bk")
   new_file = dump_file()
   copyfile(new_file, upload_history_file)
