@@ -12,8 +12,16 @@ import sys
 import time
 from random import randint
 
+if len(sys.argv) != 3:
+  print "Usage: %s <search_term> <debug_mode>\n"
+  sys.exit()
+
+search_term = sys.argv[1]
+debug_mode = sys.argv[2]
 # make sure you run the script with debug set to True first
-debug = False
+debug = True
+if debug_mode == '0':
+  debug = False
 
 categories = {
               'pourakarmika' : 'pourakarmika',
@@ -102,7 +110,7 @@ try:
 except:
   print "File not found: %s" % (upload_history_file)
    
-search = api.GetSearch(term='bbmpadmn', lang='en', result_type='recent', count=200, max_id='')
+search = api.GetSearch(term=search_term, lang='en', result_type='recent', count=200, max_id='')
 append_url = " http://loksattakarnataka.org/BengaluruLokal/"
 append_handle = " Join @BengaluruLOKal"
 for t in search:
@@ -124,7 +132,8 @@ for t in search:
       #tweet_category += v + '|'
       tweet_category = v
   if len(tweet_category) < 1:
-    #print "No tweet category for: ", tweet
+    if debug is True:
+      print "No tweet category for: ", tweet
     continue
 
   if tweet_category in messages:
