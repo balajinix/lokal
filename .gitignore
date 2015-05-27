@@ -1,0 +1,8 @@
+src/facebook/bin/nohup.out
+src/facebook/conf/*
+src/facebook/input/*
+src/facebook/logs/*
+src/twitter/bin/nohup.out
+src/twitter/conf/*
+src/twitter/input/*
+src/twitter/logs/*

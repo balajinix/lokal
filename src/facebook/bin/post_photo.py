@@ -10,16 +10,11 @@ from random import randint
 from shutil import copyfile
 
 debug = False
-upload_history_file = "../input/wanted_repost.txt"
-log_file = "../logs/wanted_repost.log"
-#upload_photo_url = 'http://4.bp.blogspot.com/-BLWWSEmKcoI/VTNOMewzPXI/AAAAAAAAB6I/P_YpCc4xjfk/s1600/LOKal%2BOne-Sheeter.jpg'
-upload_photo_url = 'http://1.bp.blogspot.com/-j2cvkQVWFVM/VTkVR0gbxLI/AAAAAAAAB6w/ko4If9Gh4A8/s1600/Wanted%2BPoster-rev.jpg'
-#upload_photo_url = 'http://3.bp.blogspot.com/-CggBxiyUp-Q/VULPkzfxeAI/AAAAAAAAB7c/t3KU5-DpEGw/s1600/Red%2BCarpet.png'
-#upload_photo_url = 'http://1.bp.blogspot.com/-Geytv-dcfDY/VULZOjMmF7I/AAAAAAAAB7s/YsPjauxqXz0/s1600/Labour%2BDay_pourakarmikas.jpg'
-#upload_photo_url = 'http://4.bp.blogspot.com/-7NRe8Hf7A6U/VUQ2RioSDzI/AAAAAAAAB8I/rSd8ciNo6EE/s1600/11125267_10153884723284832_6666883335278704733_o.jpg'
-
-#upload_photo_caption = "Bengaluru LOKal platform is ready. The carpet's rolled out. Are you ready to participate? If YES, let us know here: http://goo.gl/forms/Q4XwKbeyoA"
-
+upload_history_file = "../logs/denque.txt"
+#upload_history_file = "../logs/coming_soon.txt"
+log_file = "../logs/post_photo.log"
+upload_photo_url = 'http://loksattakarnataka.org/wp-content/uploads/2015/05/11264838_10205764583449480_8524941219634272852_n.jpg'
+#upload_photo_url = 'http://loksattakarnataka.org/wp-content/uploads/2015/05/LSPK-Announcement.png'
 
 upload_hash = {}
 def dump_file():
@@ -68,9 +63,9 @@ for page in pages:
   page_name = page['name']
   page_id = page['id']
 
-   # ignore pages that we don't want updated
-  if page_name == 'Bengaluru LOKal':
-    continue
+  # ignore pages that we don't want updated
+  #if page_name == 'Bengaluru LOKal' or page_name == 'Loksatta for BBMP' or page_name == 'Ashwin4MLA' or page_name == 'Ashwin4MLC':
+  #  continue
 
   if page_id in upload_hash:
     continue
@@ -78,6 +73,7 @@ for page in pages:
   #print page_name + '\t' + page_id + '\t' + page_access_token
   if debug is True and page_name != 'LSPK Media Team':
       continue
+
   r = ''
   try:
     #print page_name + '\t' + page_id + '\t' + page_access_token
@@ -85,7 +81,11 @@ for page in pages:
     path_string = "%s/photos" % page_id
     page_graph = GraphAPI(page_access_token)
     image_url = upload_photo_url
-    upload_photo_caption = "We request %s volunteers who haven't done so already, to complete this questionnaire today. http://goo.gl/forms/Q4XwKbeyoA We'll be forming teams based on your interest areas." % (page_name)
+    #upload_photo_caption = "Loksatta Promise: If our candidate becomes councilor for %s in BBMP, we'll make and keep all drain manhole covers level with the road.\n\nWhy are drain manhole covers on Bengaluru roads, not level with the road surface? Loksatta's National Vice President Dr. Ashwin Mahesh explains in the below link.\n\nhttps://www.facebook.com/photo.php?fbid=10205804666091521&set=a.2097391670050.2122376.1103113024&type=1&permPage=1\n\nIn one word: Corruption. We'll fix this.\n\nHence this pledge: If Loksatta wins the BBMP Councilor election from %s, we promise to make and then keep, all drain manhole covers level with the road.\n\nYou can access more Loksatta solutions for a better Bengaluru here: http://loksattakarnataka.org/BengaluruLokal" % (page_name.replace("Loksatta ",""), page_name.replace("Loksatta ",""))
+    try:
+      upload_photo_caption = "Dengue comes every year. Can the solution come this year?\n\nBengaluru needs a Health Map to combat Dengue. When elected to BBMP, Loksatta Party councillors will work wth the city government to publish the number of patients treated each day of the year and the diseases diagnosed at every hospital in Bengaluru. Patient information anonymized ofcourse. This data will form a Health Map to predict future epidemics, as well as to critically analyze the performance of public hospitals.\n\nWe request %s volunteers to come up suggestions to combat Denque and other epidemics in your area. This could be things like cleaning a open drain or ensuring adequate medical supplies at a public hospital or working with private doctors in your area and seeking guidance from them. Together with your ward coordinator and Loksatta candidate for BBMP, we can make a real impact on the health of people in your ward.\n\nYou can access more Loksatta solutions for a better Bengaluru here: http://loksattakarnataka.org/BengaluruLokal." % (page_name)
+    except:
+      print "Error in caption"
     r = page_graph.post(path=path_string,caption=upload_photo_caption,source=urllib2.urlopen(image_url))
     photo_id = r['id'] 
     print 'Success: posted photo with id: ' + photo_id
