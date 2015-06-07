@@ -9,19 +9,16 @@ import time
 from random import randint
 from shutil import copyfile
 
-##################################
-# this script is not working yet #
-##################################
-
-debug = True
-upload_history_file = "../output/bda_master_plan_meeting.txt"
-upload_link_url = 'https://www.facebook.com/BengaluruLOKal/posts/1583309238603369'
-upload_link_caption = "Testing this link https://www.facebook.com/BengaluruLOKal/posts/1583309238603369"
+debug = False
+upload_history_file = "../logs/encroachment_revelation.txt"
+log_file = "../logs/post_line.log"
+#upload_link_url = 'http://loksattakarnataka.org/loksatta-revelation-details-of-encroachment-of-public-land-by-vips-and-their-relatives/'
+upload_link_url = 'https://www.facebook.com/Loksattakarnataka/photos/a.197593726979656.48608.172917339447295/883413641730991/?type=1&permPage=1'
 
 upload_hash = {}
 def dump_file():
   timestamp = datetime.datetime.now().time().isoformat()
-  new_file = upload_history_file + "_" + timestamp
+  new_file = log_file + "_" + timestamp
   f = open(new_file, 'w')
   for k, v in upload_hash.iteritems():
     f.write(k + '\t' + v + '\n')
@@ -63,8 +60,8 @@ pages = response['data']
 count = 0
 for page in pages:
   page_name = page['name']
-  if (page_name == 'Bengaluru LOKal'):
-    continue
+  #if (page_name == 'Bengaluru LOKal'):
+  #  continue
   page_id = page['id']
   if page_id in upload_hash:
     continue
@@ -74,34 +71,21 @@ for page in pages:
       continue
   r = ''
   try:
-    print page_name + '\t' + page_id + '\t' + page_access_token
+    #print page_name + '\t' + page_id + '\t' + page_access_token
     print "posting to %s at url http://facebook.com/%s" % (page_name, page_id)
     path_string = "%s/feed" % page_id
     page_graph = GraphAPI(page_access_token)
     image_url = upload_link_url
-    #r = page_graph.post(path=path_string,message=upload_link_caption,link=urllib2.urlopen(image_url))
-    #r = page_graph.post(path=path_string, message=upload_link_caption)
-    r = page_graph.post(path=path_string, link=upload_link_url)
-    print r
+    r = page_graph.post(path=path_string, link=upload_link_url) #, caption="Loksatta Revelation - June 9th, 1 pm, Press Club, Cubbon Park")
     link_id = r['id'] 
     print 'Success: posted link with id: ' + link_id
     upload_hash[page_id] = link_id
-  except IOError as e:
-    print "I/O error({0}): {1}".format(e.errno, e.strerror)
-    if not debug:
-      dump_file()
-  except ValueError:
-    print "Could not convert data."
-    if not debug:
-      dump_file()
   except:
     print "Unexpected error:", sys.exc_info()[0]
-    if not debug:
-      dump_file()
-    raise
+    dump_file()
 
   count += 1
-  sleep_interval = randint(4,8)
+  sleep_interval = randint(1,3)
   time.sleep(sleep_interval)
   if (count > 200):
     break

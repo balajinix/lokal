@@ -12,15 +12,16 @@ import sys
 import time
 from random import randint
 
-# make sure you run the script with debug set to True first
-debug = False
+if len(sys.argv) != 3:
+  print "Usage: %s <search_term> <debug_mode>\n"
+  sys.exit()
 
-categories = {
-              'hsr' : '174',
-              'hsr layout' : '174',
-              'bellandur' : '150',
-              'varthur' : '149'
-             }
+search_term = sys.argv[1]
+debug_mode = sys.argv[2]
+# make sure you run the script with debug set to True first
+debug = True
+if debug_mode == '0':
+  debug = False
 
 # we need to have proper credentials
 consumer_key = ''
@@ -108,14 +109,14 @@ try:
 except:
   print "File not found: %s" % (upload_history_file)
    
-search = api.GetSearch(term='bbmpadmn', lang='en', result_type='recent', count=1000, max_id='')
+search = api.GetSearch(term=search_term, lang='en', result_type='recent', count=1000, max_id='')
 for t in search:
   #print t.user.screen_name + ' (' + t.created_at + ')'
   screen_name = t.user.screen_name
 
   # for now, we'll not tweet to those already tweeted to
   if screen_name in upload_hash:
-    print "Already tweeted to", screen_name, " with message ", upload_hash[screen_name]
+    #print "Already tweeted to", screen_name, " with message ", upload_hash[screen_name]
     continue
 
   #Add the .encode to force encoding
@@ -132,7 +133,7 @@ for t in search:
       ward_url = ward_name_hash[ward_name]
       ward_score += 1
     if 'ward' in tweet and word == '171':
-      print word.isdigit()
+      print word.isdigit(), " is a ward number"
       if word in ward_num_hash:
         print word, ward_num_hash[word]
       if word.isdigit() == True and word in ward_num_hash:
@@ -146,9 +147,9 @@ for t in search:
     try:
       mention = "Tweet: @" + screen_name + " says: " + tweet
       print mention
-      print "Response: ", response, "\n"
       if debug is False:
         status = api.PostUpdate(response)
+      print "Response: ", response, "\n"
     except Exception, e:
       print "[Error] Could not tweet response %s" %(response)
     if debug is False:
