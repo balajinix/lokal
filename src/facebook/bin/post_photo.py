@@ -10,9 +10,9 @@ from random import randint
 from shutil import copyfile
 
 debug = False
-upload_history_file = "../logs/blt_city_government.txt"
+upload_history_file = "../logs/lokayukta2.txt"
 log_file = "../logs/post_photo.log"
-upload_photo_url = 'http://loksattakarnataka.org/wp-content/uploads/2015/06/5-20-1000-Bengaluru-Needs-No-Charity-A4x2.jpg'
+upload_photo_url = 'http://loksattakarnataka.org/wp-content/uploads/2015/07/5-20-1000-Lokayukta-Must-Go.jpg'
 
 upload_hash = {}
 def dump_file():
@@ -62,8 +62,8 @@ for page in pages:
   page_id = page['id']
 
   # ignore pages that we don't want updated
-  #if page_name == 'Bengaluru LOKal' or page_name == 'Loksatta for BBMP' or page_name == 'Ashwin4MLA' or page_name == 'Ashwin4MLC':
-  #  continue
+  #if page_name == 'Bengaluru LOKal' or page_name == 'Loksatta for BBMP' or page_name == 'Ashwin4MLA' or page_name == 'Ashwin For MLC':
+  # continue
 
   if page_id in upload_hash:
     continue
@@ -81,8 +81,7 @@ for page in pages:
     image_url = upload_photo_url
     try:
       ward_name = page_name.replace("Loksatta ", "")
-      upload_photo_caption = "Bengaluru needs a City Government, not charity from CM. We want,\n\n1. Empowered MPC (Metropolitan Plann#ing Committee).\n2. Directly elected Mayor with 5 year term.\n3. Ward Committees in each ward.\n4. Give 10%% of taxes collected from Bengaluru back to the city (about Rs. 7000 crores per annum).\n\nInstead, the CM wants to give Bengaluru a makeover with Rs. 3500 crores of tax payers money just before the BBMP elections. http://www.deccanherald.com/content/481293/government-draws-up-ambitious-plan.html\n\nDo we need such charity or an empowered city government?\n\nDo you know if the Ward Committee in your area ever met? If not, why?\n\nWhy is the BBMP woefully short of funds unlike Mumbai or Hyderabad city governments?\n\nWhy do we have rotating mayors with short 1 years terms?"
-      print upload_photo_caption
+      upload_photo_caption = "An extortionist in the clothes of an ombudsman? Loksatta demands immediate resignation of Lokayukta Justice Bhaskar Rao."
     except:
       print "Error in caption"
     r = page_graph.post(path=path_string,caption=upload_photo_caption,source=urllib2.urlopen(image_url))

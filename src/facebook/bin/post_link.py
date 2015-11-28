@@ -9,11 +9,10 @@ import time
 from random import randint
 from shutil import copyfile
 
-debug = False
-upload_history_file = "../logs/encroachment_revelation.txt"
+debug = True
+upload_history_file = "../logs/dumping_saaku.txt"
 log_file = "../logs/post_line.log"
-#upload_link_url = 'http://loksattakarnataka.org/loksatta-revelation-details-of-encroachment-of-public-land-by-vips-and-their-relatives/'
-upload_link_url = 'https://www.facebook.com/Loksattakarnataka/photos/a.197593726979656.48608.172917339447295/883413641730991/?type=1&permPage=1'
+upload_link_url = 'http://timesofindia.indiatimes.com/city/bengaluru/The-way-out-Dumping-saaku-segregation-beku/articleshow/44831867.cms'
 
 upload_hash = {}
 def dump_file():
@@ -76,7 +75,7 @@ for page in pages:
     path_string = "%s/feed" % page_id
     page_graph = GraphAPI(page_access_token)
     image_url = upload_link_url
-    r = page_graph.post(path=path_string, link=upload_link_url) #, caption="Loksatta Revelation - June 9th, 1 pm, Press Club, Cubbon Park")
+    r = page_graph.post(path=path_string, link=upload_link_url, name="test") #, caption="Loksatta Revelation - June 9th, 1 pm, Press Club, Cubbon Park")
     link_id = r['id'] 
     print 'Success: posted link with id: ' + link_id
     upload_hash[page_id] = link_id
