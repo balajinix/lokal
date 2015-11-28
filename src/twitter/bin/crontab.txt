@@ -1,0 +1,2 @@
+0 3 * * * /home/ubuntu/lokal/src/twitter/bin/run_scripts.sh >> /home/ubuntu/lokal/src/twitter/logs/run_scripts.log
+0 12 * * * /home/ubuntu/lokal/src/twitter/bin/run_scripts.sh >> /home/ubuntu/lokal/src/twitter/logs/run_scripts.log
